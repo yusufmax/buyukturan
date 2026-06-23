@@ -433,7 +433,7 @@ input, textarea {
   transform: translateY(-50%) translate(var(--parallax-x, 0px), var(--parallax-y, 0px));
   width: clamp(300px, 50vw, 600px);
   height: auto;
-  opacity: 0.06;
+  opacity: 0.25;
   pointer-events: none;
   color: var(--color-text);
   transition: transform 0.2s var(--ease-out);
