@@ -815,6 +815,21 @@ input, textarea {
   background: var(--color-bg-alt);
 }
 
+.expertise-content {
+  max-width: 800px;
+}
+
+.expertise-content p {
+  font-size: var(--text-lg);
+  line-height: 1.8;
+  margin-bottom: var(--space-lg);
+  color: var(--color-text);
+}
+
+.expertise-content p:last-child {
+  margin-bottom: 0;
+}
+
 .expertise-grid {
   display: grid;
   gap: var(--space-lg);
