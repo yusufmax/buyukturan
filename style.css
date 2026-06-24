@@ -815,19 +815,80 @@ input, textarea {
   background: var(--color-bg-alt);
 }
 
-.expertise-content {
-  max-width: 800px;
+.expertise-grid-new {
+  display: grid;
+  gap: var(--space-xl);
+  margin-top: var(--space-xl);
 }
 
-.expertise-content p {
+@media (min-width: 992px) {
+  .expertise-grid-new {
+    grid-template-columns: 1.2fr 1fr;
+    gap: var(--space-3xl);
+  }
+}
+
+.expertise-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.expertise-narrative p {
   font-size: var(--text-lg);
   line-height: 1.8;
   margin-bottom: var(--space-lg);
   color: var(--color-text);
 }
 
-.expertise-content p:last-child {
+.expertise-narrative p:last-child {
   margin-bottom: 0;
+}
+
+.expertise-partnership {
+  margin-top: var(--space-xl);
+  padding-top: var(--space-xl);
+  border-top: 1px solid var(--color-border);
+}
+
+.sub-heading {
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  color: var(--color-dark);
+  margin-bottom: var(--space-md);
+  letter-spacing: -0.02em;
+}
+
+.expertise-partnership p {
+  font-size: var(--text-base);
+  color: var(--color-text);
+  line-height: 1.6;
+}
+
+/* Products List styling */
+.products-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.products-list li {
+  font-size: var(--text-base);
+  color: var(--color-text);
+  position: relative;
+  padding-left: var(--space-lg);
+  line-height: 1.5;
+}
+
+.products-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 6px;
+  height: 6px;
+  background-color: var(--color-accent);
 }
 
 .expertise-grid {
