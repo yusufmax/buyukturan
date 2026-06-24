@@ -1379,7 +1379,7 @@ input, textarea {
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-muted);
+  color: var(--color-white);
 }
 
 .form-group input,
