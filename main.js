@@ -89,7 +89,7 @@
       'hero.title2': 'TURAN',
       'hero.title3': 'DEFENCE',
       'hero.subtitle': 'Himoya qiluvchilarni himoya qilish muhandisligi.',
-      'hero.desc': 'Great Turan Defence shaxsiy himoya tizimlarini ishlab chiqadi va ishlab chiqaradi. Ballistik bronejiletlardan tortib taktik yuk ko\'tarish moslamalarigacha, biz xavfsizlik idoralari, davlat muassasalari va Markaziy Osiyodagi vakolatli B2B hamkorlar uchun yuqori samarali mudofaa echimlarini loyihalashtiramiz.',
+      'hero.desc': 'Great Turan Defence Shaxsiy himoya vositalarini loyihalashtirish va ishlab chiqarish.',
       'hero.cta': 'Biz bilan bog\'lanish',
       'about.label': 'Kompaniya haqida',
       'about.heading': 'Maqsad\nasosida',
