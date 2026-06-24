@@ -872,33 +872,32 @@
     });
   }
 
-  // ── Live Text Editor (WYSIWYG Overlay) ──
-  function initLiveEditor() {
-    // 1. Create a floating settings/edit button in the bottom right corner
-    const editBtn = document.createElement('button');
-    editBtn.className = 'live-editor-toggle';
-    editBtn.innerHTML = `
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-right:6px;">
-        <path d="M12 20h9"></path>
-        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+  // ── Admin Panel ──
+  function initAdminPanel() {
+    // 1. Create the floating Admin Panel button
+    const adminBtn = document.createElement('button');
+    adminBtn.className = 'admin-panel-toggle';
+    adminBtn.innerHTML = `
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-right:8px;">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
       </svg>
-      <span>Edit Mode</span>
+      <span>Admin Panel</span>
     `;
-    document.body.appendChild(editBtn);
+    document.body.appendChild(adminBtn);
 
-    // Add styles dynamically in CSS
+    // 2. Inject CSS for Admin Panel
     const style = document.createElement('style');
     style.textContent = `
-      .live-editor-toggle {
+      .admin-panel-toggle {
         position: fixed;
         bottom: 30px;
         right: 30px;
         z-index: 9999;
         display: flex;
         align-items: center;
-        gap: 8px;
-        background: var(--color-dark, #16171A);
-        color: var(--color-white, #FFFFFF);
+        background: #16171A;
+        color: #FFFFFF;
         border: 1px solid var(--color-border, #D5D4D0);
         padding: 12px 20px;
         font-family: var(--font-heading);
@@ -908,204 +907,428 @@
         transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         box-shadow: 0 10px 30px rgba(0,0,0,0.15);
       }
-      .live-editor-toggle:hover {
+      .admin-panel-toggle:hover {
         background: var(--color-accent, #5B6B73);
         transform: translateY(-2px);
       }
-      .live-editor-toggle.active {
-        background: #D9383A; /* Red active mode */
-        border-color: #D9383A;
-      }
-      
-      /* Visual Feedback when Edit Mode is Active */
-      body.edit-mode-active [contenteditable="true"] {
-        outline: 1px dashed var(--color-accent, #5B6B73) !important;
-        outline-offset: 4px;
-        cursor: text;
-        transition: outline 0.2s ease;
-      }
-      body.edit-mode-active [contenteditable="true"]:hover {
-        outline: 1.5px dashed var(--color-dark, #16171A) !important;
-        background: rgba(91, 107, 115, 0.05);
-      }
-      body.edit-mode-active [contenteditable="true"]:focus {
-        outline: 2px solid var(--color-dark, #16171A) !important;
-        background: rgba(91, 107, 115, 0.08);
-      }
-      
-      /* Control Toolbar */
-      .live-editor-bar {
+
+      /* Admin Panel Modal Overlay */
+      .admin-modal-overlay {
         position: fixed;
-        bottom: -120px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 90%;
-        max-width: 600px;
-        background: rgba(22, 23, 26, 0.85);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(22, 23, 26, 0.6);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        z-index: 10000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
+      .admin-modal-overlay.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      /* Admin Card */
+      .admin-card {
+        width: 92%;
+        max-width: 960px;
+        height: 85vh;
+        background: #16171A;
         border: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 16px 24px;
+        display: flex;
+        flex-direction: column;
+        color: #FFFFFF;
+        box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+        transform: scale(0.95);
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .admin-modal-overlay.open .admin-card {
+        transform: scale(1);
+      }
+
+      /* Admin Header */
+      .admin-header {
+        padding: 20px 24px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         display: flex;
         justify-content: space-between;
         align-items: center;
-        gap: 16px;
-        z-index: 9998;
-        transition: bottom 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        box-shadow: 0 20px 50px rgba(0,0,0,0.3);
       }
-      .live-editor-bar.visible {
-        bottom: 30px;
+      .admin-title {
+        font-family: var(--font-heading);
+        font-size: 18px;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        display: flex;
+        align-items: center;
+        gap: 10px;
       }
-      .live-editor-info {
+      .admin-close-btn {
+        background: transparent;
+        color: rgba(255, 255, 255, 0.6);
+        border: none;
+        cursor: pointer;
+        padding: 4px;
+        transition: color 0.2s ease;
+      }
+      .admin-close-btn:hover {
         color: #FFFFFF;
+      }
+
+      /* Admin Body Grid */
+      .admin-body {
+        flex: 1;
+        display: flex;
+        overflow: hidden;
+      }
+
+      /* Sidebar Navigation */
+      .admin-sidebar {
+        width: 220px;
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        flex-direction: column;
+        padding: 16px 0;
+        background: rgba(255, 255, 255, 0.02);
+      }
+      .admin-tab-btn {
+        background: transparent;
+        color: rgba(255, 255, 255, 0.6);
+        border: none;
+        padding: 12px 24px;
+        text-align: left;
+        font-family: var(--font-heading);
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border-left: 3px solid transparent;
+      }
+      .admin-tab-btn:hover {
+        color: #FFFFFF;
+        background: rgba(255, 255, 255, 0.04);
+      }
+      .admin-tab-btn.active {
+        color: #FFFFFF;
+        background: rgba(255, 255, 255, 0.06);
+        border-left-color: var(--color-accent, #5B6B73);
+      }
+
+      /* Main Scrollable Content Area */
+      .admin-content {
+        flex: 1;
+        padding: 24px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+      .admin-tab-panel {
+        display: none;
+        flex-direction: column;
+        gap: 24px;
+      }
+      .admin-tab-panel.active {
+        display: flex;
+      }
+
+      /* Input Forms Styling */
+      .admin-field-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        padding-bottom: 20px;
+      }
+      .admin-field-group:last-child {
+        border-bottom: none;
+      }
+      .admin-field-key {
+        font-family: var(--font-heading);
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--color-accent, #5B6B73);
+        letter-spacing: 0.03em;
+      }
+      .admin-field-inputs {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      @media (min-width: 768px) {
+        .admin-field-inputs {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      .admin-input-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .admin-input-header {
+        display: flex;
+        justify-content: space-between;
+        font-family: var(--font-body);
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.4);
+      }
+      .admin-input-header span.lang-tag {
+        background: rgba(255, 255, 255, 0.1);
+        color: #FFFFFF;
+        padding: 1px 5px;
+        font-size: 10px;
+        font-weight: 600;
+      }
+      .admin-textarea {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: #FFFFFF;
+        padding: 10px 12px;
         font-family: var(--font-body);
         font-size: 13px;
-        line-height: 1.4;
+        line-height: 1.5;
+        resize: vertical;
+        min-height: 70px;
+        transition: border-color 0.2s ease;
       }
-      .live-editor-info strong {
-        color: var(--color-accent, #5B6B73);
+      .admin-textarea:focus {
+        border-color: var(--color-accent, #5B6B73);
+        outline: none;
+        background: rgba(255, 255, 255, 0.05);
       }
-      .live-editor-actions {
+
+      /* Admin Footer Actions */
+      .admin-footer {
+        padding: 16px 24px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.02);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .admin-footer-actions {
         display: flex;
         gap: 12px;
       }
-      .live-editor-btn {
+      .admin-footer-btn {
         background: transparent;
         color: #FFFFFF;
         border: 1px solid rgba(255, 255, 255, 0.2);
-        padding: 8px 16px;
+        padding: 10px 20px;
         font-family: var(--font-heading);
         font-size: 13px;
         font-weight: 500;
         cursor: pointer;
         transition: all 0.2s ease;
       }
-      .live-editor-btn:hover {
-        background: rgba(255, 255, 255, 0.1);
+      .admin-footer-btn:hover {
+        background: rgba(255, 255, 255, 0.05);
         border-color: #FFFFFF;
       }
-      .live-editor-btn.btn-primary-edit {
+      .admin-footer-btn.btn-primary-admin {
         background: var(--color-accent, #5B6B73);
         border-color: var(--color-accent, #5B6B73);
       }
-      .live-editor-btn.btn-primary-edit:hover {
+      .admin-footer-btn.btn-primary-admin:hover {
         background: var(--color-accent-h, #6E808A);
         border-color: var(--color-accent-h, #6E808A);
       }
     `;
     document.head.appendChild(style);
 
-    // 2. Create the Toolbar bar
-    const bar = document.createElement('div');
-    bar.className = 'live-editor-bar';
-    bar.innerHTML = `
-      <div class="live-editor-info">
-        <div><strong>Live Editor Active</strong></div>
-        <div style="opacity: 0.7; font-size: 11px;">Editing: <span id="editor-lang-indicator">EN</span> mode. Click text to edit.</div>
+    // 3. Create Modal DOM Structure
+    const overlay = document.createElement('div');
+    overlay.className = 'admin-modal-overlay';
+    document.body.appendChild(overlay);
+
+    const card = document.createElement('div');
+    card.className = 'admin-card';
+    overlay.appendChild(card);
+
+    // Header HTML
+    const header = document.createElement('div');
+    header.className = 'admin-header';
+    header.innerHTML = `
+      <div class="admin-title">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+        <span>GREAT TURAN DEFENCE — ADMIN PANEL</span>
       </div>
-      <div class="live-editor-actions">
-        <button class="live-editor-btn" id="editor-download-html">Save index.html</button>
-        <button class="live-editor-btn btn-primary-edit" id="editor-download-js">Save main.js</button>
+      <button class="admin-close-btn" aria-label="Close Admin Panel">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    `;
+    card.appendChild(header);
+
+    // Body Grid HTML
+    const body = document.createElement('div');
+    body.className = 'admin-body';
+    card.appendChild(body);
+
+    const sidebar = document.createElement('div');
+    sidebar.className = 'admin-sidebar';
+    body.appendChild(sidebar);
+
+    const content = document.createElement('div');
+    content.className = 'admin-content';
+    body.appendChild(content);
+
+    // Footer HTML
+    const footer = document.createElement('div');
+    footer.className = 'admin-footer';
+    footer.innerHTML = `
+      <div style="font-size: 11px; opacity: 0.5; max-width: 320px;">
+        Edits apply live instantly. Download index.html & main.js and replace them in the folder to save permanently.
+      </div>
+      <div class="admin-footer-actions">
+        <button class="admin-footer-btn" id="admin-download-html">Download index.html</button>
+        <button class="admin-footer-btn btn-primary-admin" id="admin-download-js">Download main.js</button>
       </div>
     `;
-    document.body.appendChild(bar);
+    card.appendChild(footer);
 
-    let isEditing = false;
-    const editableSelectors = 'h1, h2, h3, h4, h5, h6, p, a, span, blockquote, cite, label, button.btn-primary';
+    // 4. Generate dynamic Tabs and Inputs
+    const categories = [
+      { id: 'hero', name: 'Hero Section', prefix: ['hero.', 'nav.'] },
+      { id: 'about', name: 'About Company', prefix: ['about.'] },
+      { id: 'expertise', name: 'Expertise', prefix: ['expertise.'] },
+      { id: 'why', name: 'Why Us & Process', prefix: ['why.', 'process.'] },
+      { id: 'contact', name: 'Contact & Map', prefix: ['contact.'] },
+      { id: 'other', name: 'General / Footer', prefix: [] }
+    ];
+
+    // Populate Sidebar Tabs
+    categories.forEach((cat, index) => {
+      const btn = document.createElement('button');
+      btn.className = `admin-tab-btn ${index === 0 ? 'active' : ''}`;
+      btn.dataset.tab = cat.id;
+      btn.textContent = cat.name;
+      sidebar.appendChild(btn);
+
+      // Create Panel Container
+      const panel = document.createElement('div');
+      panel.className = `admin-tab-panel ${index === 0 ? 'active' : ''}`;
+      panel.id = `panel-${cat.id}`;
+      content.appendChild(panel);
+    });
+
+    // Populate translation fields dynamically based on English keys
+    const allKeys = Object.keys(translations.en).sort();
+    
+    allKeys.forEach(key => {
+      // Find matching category
+      let category = categories.find(cat => {
+        return cat.prefix.some(p => key.startsWith(p));
+      });
+      if (!category) {
+        // Default to 'other' if no prefix matches
+        category = categories.find(cat => cat.id === 'other');
+      }
+
+      const panel = document.getElementById(`panel-${category.id}`);
+      if (panel) {
+        const fieldGroup = document.createElement('div');
+        fieldGroup.className = 'admin-field-group';
+
+        fieldGroup.innerHTML = `
+          <div class="admin-field-key">${key}</div>
+          <div class="admin-field-inputs">
+            <div class="admin-input-wrap">
+              <div class="admin-input-header">
+                <span>English Text</span>
+                <span class="lang-tag">EN</span>
+              </div>
+              <textarea class="admin-textarea" data-key="${key}" data-lang="en">${translations.en[key] || ''}</textarea>
+            </div>
+            <div class="admin-input-wrap">
+              <div class="admin-input-header">
+                <span>Uzbek Text</span>
+                <span class="lang-tag">UZ</span>
+              </div>
+              <textarea class="admin-textarea" data-key="${key}" data-lang="uz">${translations.uz[key] || ''}</textarea>
+            </div>
+          </div>
+        `;
+        panel.appendChild(fieldGroup);
+      }
+    });
+
+    // Handle Tab switching
+    const tabBtns = sidebar.querySelectorAll('.admin-tab-btn');
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const panels = content.querySelectorAll('.admin-tab-panel');
+        panels.forEach(p => p.classList.remove('active'));
+        
+        const targetPanel = document.getElementById(`panel-${btn.dataset.tab}`);
+        if (targetPanel) targetPanel.classList.add('active');
+      });
+    });
+
+    // Handle Input change events
+    content.addEventListener('input', (e) => {
+      if (e.target.classList.contains('admin-textarea')) {
+        const key = e.target.dataset.key;
+        const lang = e.target.dataset.lang;
+        const value = e.target.value;
+
+        if (translations[lang]) {
+          translations[lang][key] = value;
+          // Apply changes instantly in background
+          applyTranslations(currentLang);
+        }
+      }
+    });
+
+    // Original source content caching for main.js download
     let originalMainJsContent = '';
-
-    // Fetch main.js file content so we can edit the translations block in it later
     fetch('main.js')
       .then(r => r.text())
       .then(text => { originalMainJsContent = text; })
       .catch(e => console.error('Failed to load main.js for local editing:', e));
 
-    // Toggle Edit Mode function
-    function toggleEditMode() {
-      isEditing = !isEditing;
-      editBtn.classList.toggle('active', isEditing);
-      bar.classList.toggle('visible', isEditing);
-      document.body.classList.toggle('edit-mode-active', isEditing);
-
-      editBtn.querySelector('span').textContent = isEditing ? 'Exit Edit' : 'Edit Mode';
-
-      // Update active language in Toolbar
-      document.getElementById('editor-lang-indicator').textContent = currentLang.toUpperCase();
-
-      const elements = document.querySelectorAll(editableSelectors);
-      elements.forEach(el => {
-        // Skip elements inside the editor controls themselves
-        if (el.closest('.live-editor-bar') || el.closest('.live-editor-toggle') || el.closest('.lang-switcher')) return;
-        
-        if (isEditing) {
-          el.setAttribute('contenteditable', 'true');
-          // Add event listener to capture live edits
-          el.addEventListener('blur', handleTextEdit);
-        } else {
-          el.removeAttribute('contenteditable');
-          el.removeEventListener('blur', handleTextEdit);
-        }
-      });
-    }
-
-    // Capture edits and update translation dictionaries
-    function handleTextEdit(e) {
-      const el = e.target;
-      const key = el.getAttribute('data-i18n');
-      const newText = el.innerHTML.trim().replace(/<br\s*\/?>/gi, '\n'); // Keep line breaks formatted correctly
-
-      if (key && translations[currentLang]) {
-        // Update the translation dictionary in memory
-        translations[currentLang][key] = newText;
-        console.log(`Updated translation key [${key}] in [${currentLang}]: "${newText}"`);
-      }
-    }
-
-    // Trigger download of modified index.html
-    document.getElementById('editor-download-html').addEventListener('click', () => {
-      // 1. Clone the current document structure
+    // Handle index.html Download
+    document.getElementById('admin-download-html').addEventListener('click', () => {
       const cloneDoc = document.documentElement.cloneNode(true);
+      // Clean up overlay elements so they are not saved in index.html
+      const toggle = cloneDoc.querySelector('.admin-panel-toggle');
+      if (toggle) toggle.remove();
+      const modal = cloneDoc.querySelector('.admin-modal-overlay');
+      if (modal) modal.remove();
 
-      // 2. Clean up editor controls from the clone so they are not saved in the file
-      const toggleBtn = cloneDoc.querySelector('.live-editor-toggle');
-      if (toggleBtn) toggleBtn.remove();
-      const controlBar = cloneDoc.querySelector('.live-editor-bar');
-      if (controlBar) controlBar.remove();
-
-      // Clean up inline contenteditable and temporary editing classes
-      cloneDoc.querySelectorAll('[contenteditable]').forEach(el => {
-        el.removeAttribute('contenteditable');
-      });
-      cloneDoc.classList.remove('edit-mode-active');
-      cloneDoc.querySelectorAll('.edit-mode-active').forEach(el => {
-        el.classList.remove('edit-mode-active');
-      });
-
-      // Get HTML string
       const htmlContent = '<!DOCTYPE html>\n' + cloneDoc.outerHTML;
-
-      // Trigger file download
       downloadFile(htmlContent, 'index.html', 'text/html');
     });
 
-    // Trigger download of modified main.js with updated translations dictionary
-    document.getElementById('editor-download-js').addEventListener('click', () => {
+    // Handle main.js Download
+    document.getElementById('admin-download-js').addEventListener('click', () => {
       if (!originalMainJsContent) {
-        alert('Could not download main.js because original source content could not be read. Make sure you are running locally via localhost.');
+        alert('Could not download main.js because original source content could not be read.');
         return;
       }
-
-      // Let's serialize the updated translations in memory
-      let serializedTranslations = JSON.stringify(translations, null, 2);
-      
-      let updatedMainJs = originalMainJsContent.replace(/const translations\s*=\s*\{[\s\S]*?\n\s*\};\s*let currentLang/g, `const translations = ${serializedTranslations};\n  let currentLang`);
-      
-      // Trigger file download
-      downloadFile(updatedMainJs, 'main.js', 'application/javascript');
+      const serialized = JSON.stringify(translations, null, 2);
+      const updated = originalMainJsContent.replace(
+        /const translations\s*=\s*\{[\s\S]*?\n\s*\};\s*let currentLang/g,
+        `const translations = ${serialized};\n  let currentLang`
+      );
+      downloadFile(updated, 'main.js', 'application/javascript');
     });
 
-    // Helper function to trigger browser download
     function downloadFile(content, fileName, contentType) {
       const a = document.createElement("a");
       const file = new Blob([content], { type: contentType });
@@ -1115,7 +1338,19 @@
       URL.revokeObjectURL(a.href);
     }
 
-    editBtn.addEventListener('click', toggleEditMode);
+    // Modal display control
+    function openAdminPanel() {
+      overlay.classList.add('open');
+    }
+    function closeAdminPanel() {
+      overlay.classList.remove('open');
+    }
+
+    adminBtn.addEventListener('click', openAdminPanel);
+    header.querySelector('.admin-close-btn').addEventListener('click', closeAdminPanel);
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) closeAdminPanel();
+    });
   }
 
   // ── Initialize ──
@@ -1128,5 +1363,5 @@
   initCustomCursor();
   initInteractiveGlobe();
   initExpandMap();
-  initLiveEditor();
+  initAdminPanel();
 })();
