@@ -872,6 +872,252 @@
     });
   }
 
+  // ── Live Text Editor (WYSIWYG Overlay) ──
+  function initLiveEditor() {
+    // 1. Create a floating settings/edit button in the bottom right corner
+    const editBtn = document.createElement('button');
+    editBtn.className = 'live-editor-toggle';
+    editBtn.innerHTML = `
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-right:6px;">
+        <path d="M12 20h9"></path>
+        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+      </svg>
+      <span>Edit Mode</span>
+    `;
+    document.body.appendChild(editBtn);
+
+    // Add styles dynamically in CSS
+    const style = document.createElement('style');
+    style.textContent = `
+      .live-editor-toggle {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--color-dark, #16171A);
+        color: var(--color-white, #FFFFFF);
+        border: 1px solid var(--color-border, #D5D4D0);
+        padding: 12px 20px;
+        font-family: var(--font-heading);
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      }
+      .live-editor-toggle:hover {
+        background: var(--color-accent, #5B6B73);
+        transform: translateY(-2px);
+      }
+      .live-editor-toggle.active {
+        background: #D9383A; /* Red active mode */
+        border-color: #D9383A;
+      }
+      
+      /* Visual Feedback when Edit Mode is Active */
+      body.edit-mode-active [contenteditable="true"] {
+        outline: 1px dashed var(--color-accent, #5B6B73) !important;
+        outline-offset: 4px;
+        cursor: text;
+        transition: outline 0.2s ease;
+      }
+      body.edit-mode-active [contenteditable="true"]:hover {
+        outline: 1.5px dashed var(--color-dark, #16171A) !important;
+        background: rgba(91, 107, 115, 0.05);
+      }
+      body.edit-mode-active [contenteditable="true"]:focus {
+        outline: 2px solid var(--color-dark, #16171A) !important;
+        background: rgba(91, 107, 115, 0.08);
+      }
+      
+      /* Control Toolbar */
+      .live-editor-bar {
+        position: fixed;
+        bottom: -120px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        max-width: 600px;
+        background: rgba(22, 23, 26, 0.85);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 16px 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        z-index: 9998;
+        transition: bottom 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+      }
+      .live-editor-bar.visible {
+        bottom: 30px;
+      }
+      .live-editor-info {
+        color: #FFFFFF;
+        font-family: var(--font-body);
+        font-size: 13px;
+        line-height: 1.4;
+      }
+      .live-editor-info strong {
+        color: var(--color-accent, #5B6B73);
+      }
+      .live-editor-actions {
+        display: flex;
+        gap: 12px;
+      }
+      .live-editor-btn {
+        background: transparent;
+        color: #FFFFFF;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 8px 16px;
+        font-family: var(--font-heading);
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      .live-editor-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: #FFFFFF;
+      }
+      .live-editor-btn.btn-primary-edit {
+        background: var(--color-accent, #5B6B73);
+        border-color: var(--color-accent, #5B6B73);
+      }
+      .live-editor-btn.btn-primary-edit:hover {
+        background: var(--color-accent-h, #6E808A);
+        border-color: var(--color-accent-h, #6E808A);
+      }
+    `;
+    document.head.appendChild(style);
+
+    // 2. Create the Toolbar bar
+    const bar = document.createElement('div');
+    bar.className = 'live-editor-bar';
+    bar.innerHTML = `
+      <div class="live-editor-info">
+        <div><strong>Live Editor Active</strong></div>
+        <div style="opacity: 0.7; font-size: 11px;">Editing: <span id="editor-lang-indicator">EN</span> mode. Click text to edit.</div>
+      </div>
+      <div class="live-editor-actions">
+        <button class="live-editor-btn" id="editor-download-html">Save index.html</button>
+        <button class="live-editor-btn btn-primary-edit" id="editor-download-js">Save main.js</button>
+      </div>
+    `;
+    document.body.appendChild(bar);
+
+    let isEditing = false;
+    const editableSelectors = 'h1, h2, h3, h4, h5, h6, p, a, span, blockquote, cite, label, button.btn-primary';
+    let originalMainJsContent = '';
+
+    // Fetch main.js file content so we can edit the translations block in it later
+    fetch('main.js')
+      .then(r => r.text())
+      .then(text => { originalMainJsContent = text; })
+      .catch(e => console.error('Failed to load main.js for local editing:', e));
+
+    // Toggle Edit Mode function
+    function toggleEditMode() {
+      isEditing = !isEditing;
+      editBtn.classList.toggle('active', isEditing);
+      bar.classList.toggle('visible', isEditing);
+      document.body.classList.toggle('edit-mode-active', isEditing);
+
+      editBtn.querySelector('span').textContent = isEditing ? 'Exit Edit' : 'Edit Mode';
+
+      // Update active language in Toolbar
+      document.getElementById('editor-lang-indicator').textContent = currentLang.toUpperCase();
+
+      const elements = document.querySelectorAll(editableSelectors);
+      elements.forEach(el => {
+        // Skip elements inside the editor controls themselves
+        if (el.closest('.live-editor-bar') || el.closest('.live-editor-toggle') || el.closest('.lang-switcher')) return;
+        
+        if (isEditing) {
+          el.setAttribute('contenteditable', 'true');
+          // Add event listener to capture live edits
+          el.addEventListener('blur', handleTextEdit);
+        } else {
+          el.removeAttribute('contenteditable');
+          el.removeEventListener('blur', handleTextEdit);
+        }
+      });
+    }
+
+    // Capture edits and update translation dictionaries
+    function handleTextEdit(e) {
+      const el = e.target;
+      const key = el.getAttribute('data-i18n');
+      const newText = el.innerHTML.trim().replace(/<br\s*\/?>/gi, '\n'); // Keep line breaks formatted correctly
+
+      if (key && translations[currentLang]) {
+        // Update the translation dictionary in memory
+        translations[currentLang][key] = newText;
+        console.log(`Updated translation key [${key}] in [${currentLang}]: "${newText}"`);
+      }
+    }
+
+    // Trigger download of modified index.html
+    document.getElementById('editor-download-html').addEventListener('click', () => {
+      // 1. Clone the current document structure
+      const cloneDoc = document.documentElement.cloneNode(true);
+
+      // 2. Clean up editor controls from the clone so they are not saved in the file
+      const toggleBtn = cloneDoc.querySelector('.live-editor-toggle');
+      if (toggleBtn) toggleBtn.remove();
+      const controlBar = cloneDoc.querySelector('.live-editor-bar');
+      if (controlBar) controlBar.remove();
+
+      // Clean up inline contenteditable and temporary editing classes
+      cloneDoc.querySelectorAll('[contenteditable]').forEach(el => {
+        el.removeAttribute('contenteditable');
+      });
+      cloneDoc.classList.remove('edit-mode-active');
+      cloneDoc.querySelectorAll('.edit-mode-active').forEach(el => {
+        el.classList.remove('edit-mode-active');
+      });
+
+      // Get HTML string
+      const htmlContent = '<!DOCTYPE html>\n' + cloneDoc.outerHTML;
+
+      // Trigger file download
+      downloadFile(htmlContent, 'index.html', 'text/html');
+    });
+
+    // Trigger download of modified main.js with updated translations dictionary
+    document.getElementById('editor-download-js').addEventListener('click', () => {
+      if (!originalMainJsContent) {
+        alert('Could not download main.js because original source content could not be read. Make sure you are running locally via localhost.');
+        return;
+      }
+
+      // Let's serialize the updated translations in memory
+      let serializedTranslations = JSON.stringify(translations, null, 2);
+      
+      let updatedMainJs = originalMainJsContent.replace(/const translations\s*=\s*\{[\s\S]*?\n\s*\};\s*let currentLang/g, `const translations = ${serializedTranslations};\n  let currentLang`);
+      
+      // Trigger file download
+      downloadFile(updatedMainJs, 'main.js', 'application/javascript');
+    });
+
+    // Helper function to trigger browser download
+    function downloadFile(content, fileName, contentType) {
+      const a = document.createElement("a");
+      const file = new Blob([content], { type: contentType });
+      a.href = URL.createObjectURL(file);
+      a.download = fileName;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+
+    editBtn.addEventListener('click', toggleEditMode);
+  }
+
   // ── Initialize ──
   handleScroll();
   updateScrollProgress();
@@ -882,4 +1128,5 @@
   initCustomCursor();
   initInteractiveGlobe();
   initExpandMap();
+  initLiveEditor();
 })();
