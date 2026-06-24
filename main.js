@@ -985,19 +985,45 @@
       }
 
       /* Visual Editing Highlights */
-      body.edit-mode-active [contenteditable="true"] {
+      body.edit-mode-active [contenteditable="true"],
+      body.edit-mode-active [contenteditable="plaintext-only"] {
         outline: 1px dashed var(--color-accent, #5B6B73) !important;
         outline-offset: 4px;
         cursor: text;
         transition: outline 0.2s ease;
+        font-family: inherit;
       }
-      body.edit-mode-active [contenteditable="true"]:hover {
+      body.edit-mode-active [contenteditable="true"]:hover,
+      body.edit-mode-active [contenteditable="plaintext-only"]:hover {
         outline: 1.5px dashed var(--color-dark, #16171A) !important;
         background: rgba(91, 107, 115, 0.05);
       }
-      body.edit-mode-active [contenteditable="true"]:focus {
+      body.edit-mode-active [contenteditable="true"]:focus,
+      body.edit-mode-active [contenteditable="plaintext-only"]:focus {
         outline: 2px solid var(--color-dark, #16171A) !important;
         background: rgba(91, 107, 115, 0.08);
+      }
+
+      /* Visual Editing Fonts Preservation */
+      body.edit-mode-active h1[contenteditable],
+      body.edit-mode-active h2[contenteditable],
+      body.edit-mode-active h3[contenteditable],
+      body.edit-mode-active h4[contenteditable],
+      body.edit-mode-active h5[contenteditable],
+      body.edit-mode-active h6[contenteditable] {
+        font-family: var(--font-heading) !important;
+      }
+      body.edit-mode-active p[contenteditable],
+      body.edit-mode-active span[contenteditable],
+      body.edit-mode-active a[contenteditable],
+      body.edit-mode-active button[contenteditable],
+      body.edit-mode-active label[contenteditable] {
+        font-family: var(--font-body) !important;
+      }
+
+      /* Force any browser-injected child elements (spans, fonts) to inherit the parent's font-family */
+      body.edit-mode-active [contenteditable] * {
+        font-family: inherit !important;
       }
 
       /* Admin Panel Modal Overlay */
@@ -1439,10 +1465,19 @@
         if (el.closest('.admin-control-bar') || el.closest('.admin-modal-overlay') || el.closest('.admin-panel-toggle') || el.closest('.lang-switcher')) return;
         
         if (isVisualEditing) {
-          el.setAttribute('contenteditable', 'true');
+          // Attempt plaintext-only first to prevent browser formatting/style pollution, fallback to true
+          try {
+            el.contentEditable = 'plaintext-only';
+          } catch (err) {
+            el.setAttribute('contenteditable', 'true');
+          }
+          if (el.getAttribute('contenteditable') !== 'plaintext-only' && el.contentEditable !== 'plaintext-only') {
+            el.setAttribute('contenteditable', 'true');
+          }
           el.addEventListener('blur', handlePageTextBlur);
         } else {
           el.removeAttribute('contenteditable');
+          el.removeAttribute('contentEditable');
           el.removeEventListener('blur', handlePageTextBlur);
         }
       });
