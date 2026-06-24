@@ -19,7 +19,7 @@
       'hero.title2': 'TURAN',
       'hero.title3': 'DEFENCE',
       'hero.subtitle': 'Engineering protection for those who protect others.',
-      'hero.desc': 'Great Turan Defence develops and manufactures advanced personal protection systems. From ballistic body armor to tactical load-bearing gear, we engineer high-performance defensive solutions for security agencies, state institutions, and authorized B2B partners in Central Asia.',
+      'hero.desc': 'Great Turan Defence. Design and manufacturing of personal protective equipment.',
       'hero.cta': 'Contact Us',
       'about.label': 'About the Company',
       'about.heading': 'Built on\nPurpose',
