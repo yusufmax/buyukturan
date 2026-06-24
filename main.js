@@ -872,21 +872,21 @@
     });
   }
 
-  // ── Admin Panel ──
-  function initAdminPanel() {
-    // 1. Create the floating Admin Panel button
-    const adminBtn = document.createElement('button');
-    adminBtn.className = 'admin-panel-toggle';
-    adminBtn.innerHTML = `
+  // ── Admin & Live Editor Controls ──
+  function initAdminControls() {
+    // 1. Create Floating Launcher Button
+    const launcherBtn = document.createElement('button');
+    launcherBtn.className = 'admin-panel-toggle';
+    launcherBtn.innerHTML = `
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-right:8px;">
         <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
         <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
       </svg>
-      <span>Admin Panel</span>
+      <span>Admin Controls</span>
     `;
-    document.body.appendChild(adminBtn);
+    document.body.appendChild(launcherBtn);
 
-    // 2. Inject CSS for Admin Panel
+    // 2. Inject Styles
     const style = document.createElement('style');
     style.textContent = `
       .admin-panel-toggle {
@@ -910,6 +910,94 @@
       .admin-panel-toggle:hover {
         background: var(--color-accent, #5B6B73);
         transform: translateY(-2px);
+      }
+      .admin-panel-toggle.active {
+        background: var(--color-accent, #5B6B73);
+      }
+
+      /* Control Bar */
+      .admin-control-bar {
+        position: fixed;
+        bottom: -150px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        max-width: 820px;
+        background: rgba(22, 23, 26, 0.85);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 16px 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        z-index: 9998;
+        transition: bottom 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+      }
+      .admin-control-bar.visible {
+        bottom: 30px;
+      }
+      .admin-bar-info {
+        color: #FFFFFF;
+        font-family: var(--font-body);
+        font-size: 13px;
+        line-height: 1.4;
+      }
+      .admin-bar-info strong {
+        color: var(--color-accent, #5B6B73);
+      }
+      .admin-bar-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .admin-bar-btn {
+        background: transparent;
+        color: #FFFFFF;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 8px 14px;
+        font-family: var(--font-heading);
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .admin-bar-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: #FFFFFF;
+      }
+      .admin-bar-btn.active-mode {
+        background: #D9383A;
+        border-color: #D9383A;
+      }
+      .admin-bar-btn.btn-primary-admin {
+        background: var(--color-accent, #5B6B73);
+        border-color: var(--color-accent, #5B6B73);
+      }
+      .admin-bar-btn.btn-primary-admin:hover {
+        background: var(--color-accent-h, #6E808A);
+        border-color: var(--color-accent-h, #6E808A);
+      }
+
+      /* Visual Editing Highlights */
+      body.edit-mode-active [contenteditable="true"] {
+        outline: 1px dashed var(--color-accent, #5B6B73) !important;
+        outline-offset: 4px;
+        cursor: text;
+        transition: outline 0.2s ease;
+      }
+      body.edit-mode-active [contenteditable="true"]:hover {
+        outline: 1.5px dashed var(--color-dark, #16171A) !important;
+        background: rgba(91, 107, 115, 0.05);
+      }
+      body.edit-mode-active [contenteditable="true"]:focus {
+        outline: 2px solid var(--color-dark, #16171A) !important;
+        background: rgba(91, 107, 115, 0.08);
       }
 
       /* Admin Panel Modal Overlay */
@@ -1143,63 +1231,94 @@
     `;
     document.head.appendChild(style);
 
-    // 3. Create Modal DOM Structure
+    // 3. Create Bottom Control Bar
+    const controlBar = document.createElement('div');
+    controlBar.className = 'admin-control-bar';
+    controlBar.innerHTML = `
+      <div class="admin-bar-info">
+        <div><strong>Admin Controls</strong></div>
+        <div style="opacity: 0.7; font-size: 11px;">Visual Editing: <span id="visual-edit-indicator" style="font-weight:600; color:#D9383A;">OFF</span></div>
+      </div>
+      <div class="admin-bar-actions">
+        <button class="admin-bar-btn" id="hub-toggle-visual">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+          </svg>
+          <span>Visual Edit</span>
+        </button>
+        <button class="admin-bar-btn" id="hub-open-dashboard">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="9"></rect>
+            <rect x="14" y="3" width="7" height="5"></rect>
+            <rect x="14" y="12" width="7" height="9"></rect>
+            <rect x="3" y="16" width="7" height="5"></rect>
+          </svg>
+          <span>Form Dashboard</span>
+        </button>
+        <button class="admin-bar-btn" id="hub-download-html">Save index.html</button>
+        <button class="admin-bar-btn btn-primary-admin" id="hub-download-js">Save main.js</button>
+      </div>
+    `;
+    document.body.appendChild(controlBar);
+
+    // 4. Create Modal Overlay structure
     const overlay = document.createElement('div');
     overlay.className = 'admin-modal-overlay';
     document.body.appendChild(overlay);
 
-    const card = document.createElement('div');
-    card.className = 'admin-card';
-    overlay.appendChild(card);
+    const modalCard = document.createElement('div');
+    modalCard.className = 'admin-card';
+    overlay.appendChild(modalCard);
 
     // Header HTML
-    const header = document.createElement('div');
-    header.className = 'admin-header';
-    header.innerHTML = `
+    const modalHeader = document.createElement('div');
+    modalHeader.className = 'admin-header';
+    modalHeader.innerHTML = `
       <div class="admin-title">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
           <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
         </svg>
-        <span>GREAT TURAN DEFENCE — ADMIN PANEL</span>
+        <span>GREAT TURAN DEFENCE — FORM DASHBOARD</span>
       </div>
-      <button class="admin-close-btn" aria-label="Close Admin Panel">
+      <button class="admin-close-btn" aria-label="Close Dashboard">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="18" y1="6" x2="6" y2="18"></line>
           <line x1="6" y1="6" x2="18" y2="18"></line>
         </svg>
       </button>
     `;
-    card.appendChild(header);
+    modalCard.appendChild(modalHeader);
 
     // Body Grid HTML
-    const body = document.createElement('div');
-    body.className = 'admin-body';
-    card.appendChild(body);
+    const modalBody = document.createElement('div');
+    modalBody.className = 'admin-body';
+    modalCard.appendChild(modalBody);
 
     const sidebar = document.createElement('div');
     sidebar.className = 'admin-sidebar';
-    body.appendChild(sidebar);
+    modalBody.appendChild(sidebar);
 
     const content = document.createElement('div');
     content.className = 'admin-content';
-    body.appendChild(content);
+    modalBody.appendChild(content);
 
     // Footer HTML
-    const footer = document.createElement('div');
-    footer.className = 'admin-footer';
-    footer.innerHTML = `
+    const modalFooter = document.createElement('div');
+    modalFooter.className = 'admin-footer';
+    modalFooter.innerHTML = `
       <div style="font-size: 11px; opacity: 0.5; max-width: 320px;">
         Edits apply live instantly. Download index.html & main.js and replace them in the folder to save permanently.
       </div>
       <div class="admin-footer-actions">
-        <button class="admin-footer-btn" id="admin-download-html">Download index.html</button>
-        <button class="admin-footer-btn btn-primary-admin" id="admin-download-js">Download main.js</button>
+        <button class="admin-footer-btn" id="modal-download-html">Download index.html</button>
+        <button class="admin-footer-btn btn-primary-admin" id="modal-download-js">Download main.js</button>
       </div>
     `;
-    card.appendChild(footer);
+    modalCard.appendChild(modalFooter);
 
-    // 4. Generate dynamic Tabs and Inputs
+    // 5. Generate dynamic Tabs and Inputs
     const categories = [
       { id: 'hero', name: 'Hero Section', prefix: ['hero.', 'nav.'] },
       { id: 'about', name: 'About Company', prefix: ['about.'] },
@@ -1224,18 +1343,12 @@
       content.appendChild(panel);
     });
 
-    // Populate translation fields dynamically based on English keys
+    // Populate fields dynamically based on English keys
     const allKeys = Object.keys(translations.en).sort();
     
     allKeys.forEach(key => {
-      // Find matching category
-      let category = categories.find(cat => {
-        return cat.prefix.some(p => key.startsWith(p));
-      });
-      if (!category) {
-        // Default to 'other' if no prefix matches
-        category = categories.find(cat => cat.id === 'other');
-      }
+      let category = categories.find(cat => cat.prefix.some(p => key.startsWith(p)));
+      if (!category) category = categories.find(cat => cat.id === 'other');
 
       const panel = document.getElementById(`panel-${category.id}`);
       if (panel) {
@@ -1265,7 +1378,7 @@
       }
     });
 
-    // Handle Tab switching
+    // Tab switching logic
     const tabBtns = sidebar.querySelectorAll('.admin-tab-btn');
     tabBtns.forEach(btn => {
       btn.addEventListener('click', () => {
@@ -1280,7 +1393,7 @@
       });
     });
 
-    // Handle Input change events
+    // Sync input form updates to translation dictionaries
     content.addEventListener('input', (e) => {
       if (e.target.classList.contains('admin-textarea')) {
         const key = e.target.dataset.key;
@@ -1289,34 +1402,102 @@
 
         if (translations[lang]) {
           translations[lang][key] = value;
-          // Apply changes instantly in background
           applyTranslations(currentLang);
+          // Sync changes to the other fields in case the same key is rendered elsewhere in modal
+          const twinTextarea = content.querySelector(`.admin-textarea[data-key="${key}"][data-lang="${lang}"]`);
+          if (twinTextarea && twinTextarea !== e.target) {
+            twinTextarea.value = value;
+          }
         }
       }
     });
 
-    // Original source content caching for main.js download
+    // ── Live Click-to-Edit Mode Logic ──
+    let isVisualEditing = false;
+    const editableSelectors = 'h1, h2, h3, h4, h5, h6, p, a, span, blockquote, cite, label, button.btn-primary';
+
+    function toggleVisualEditing() {
+      isVisualEditing = !isVisualEditing;
+      const toggleVisualBtn = document.getElementById('hub-toggle-visual');
+      const visualIndicator = document.getElementById('visual-edit-indicator');
+
+      toggleVisualBtn.classList.toggle('active-mode', isVisualEditing);
+      document.body.classList.toggle('edit-mode-active', isVisualEditing);
+      
+      if (isVisualEditing) {
+        visualIndicator.textContent = 'ON';
+        visualIndicator.style.color = '#1E9F5E'; // Green
+        toggleVisualBtn.querySelector('span').textContent = 'Disable Edit';
+      } else {
+        visualIndicator.textContent = 'OFF';
+        visualIndicator.style.color = '#D9383A'; // Red
+        toggleVisualBtn.querySelector('span').textContent = 'Visual Edit';
+      }
+
+      const elements = document.querySelectorAll(editableSelectors);
+      elements.forEach(el => {
+        if (el.closest('.admin-control-bar') || el.closest('.admin-modal-overlay') || el.closest('.admin-panel-toggle') || el.closest('.lang-switcher')) return;
+        
+        if (isVisualEditing) {
+          el.setAttribute('contenteditable', 'true');
+          el.addEventListener('blur', handlePageTextBlur);
+        } else {
+          el.removeAttribute('contenteditable');
+          el.removeEventListener('blur', handlePageTextBlur);
+        }
+      });
+    }
+
+    function handlePageTextBlur(e) {
+      const el = e.target;
+      const key = el.getAttribute('data-i18n');
+      const newText = el.innerHTML.trim().replace(/<br\s*\/?>/gi, '\n');
+
+      if (key && translations[currentLang]) {
+        // Update model dict
+        translations[currentLang][key] = newText;
+        applyTranslations(currentLang);
+        
+        // Sync modified text back to the admin modal textareas
+        const modalTextarea = content.querySelector(`.admin-textarea[data-key="${key}"][data-lang="${currentLang}"]`);
+        if (modalTextarea) {
+          modalTextarea.value = newText;
+        }
+      }
+    }
+
+    // Cache source code for main.js download
     let originalMainJsContent = '';
     fetch('main.js')
       .then(r => r.text())
       .then(text => { originalMainJsContent = text; })
       .catch(e => console.error('Failed to load main.js for local editing:', e));
 
-    // Handle index.html Download
-    document.getElementById('admin-download-html').addEventListener('click', () => {
+    // Handle HTML source generation and download
+    function downloadHtml() {
       const cloneDoc = document.documentElement.cloneNode(true);
-      // Clean up overlay elements so they are not saved in index.html
+      // Clean up injected elements
       const toggle = cloneDoc.querySelector('.admin-panel-toggle');
       if (toggle) toggle.remove();
-      const modal = cloneDoc.querySelector('.admin-modal-overlay');
-      if (modal) modal.remove();
+      const controlBarEl = cloneDoc.querySelector('.admin-control-bar');
+      if (controlBarEl) controlBarEl.remove();
+      const modalOverlay = cloneDoc.querySelector('.admin-modal-overlay');
+      if (modalOverlay) modalOverlay.remove();
+
+      cloneDoc.querySelectorAll('[contenteditable]').forEach(el => {
+        el.removeAttribute('contenteditable');
+      });
+      cloneDoc.classList.remove('edit-mode-active');
+      cloneDoc.querySelectorAll('.edit-mode-active').forEach(el => {
+        el.classList.remove('edit-mode-active');
+      });
 
       const htmlContent = '<!DOCTYPE html>\n' + cloneDoc.outerHTML;
       downloadFile(htmlContent, 'index.html', 'text/html');
-    });
+    }
 
-    // Handle main.js Download
-    document.getElementById('admin-download-js').addEventListener('click', () => {
+    // Handle JS source serialization and download
+    function downloadJs() {
       if (!originalMainJsContent) {
         alert('Could not download main.js because original source content could not be read.');
         return;
@@ -1327,7 +1508,7 @@
         `const translations = ${serialized};\n  let currentLang`
       );
       downloadFile(updated, 'main.js', 'application/javascript');
-    });
+    }
 
     function downloadFile(content, fileName, contentType) {
       const a = document.createElement("a");
@@ -1338,18 +1519,44 @@
       URL.revokeObjectURL(a.href);
     }
 
-    // Modal display control
-    function openAdminPanel() {
+    // Bottom Bar display control
+    let isHubBarOpen = false;
+    function toggleHubBar() {
+      isHubBarOpen = !isHubBarOpen;
+      controlBar.classList.toggle('visible', isHubBarOpen);
+      launcherBtn.classList.toggle('active', isHubBarOpen);
+      launcherBtn.querySelector('span').textContent = isHubBarOpen ? 'Hide Controls' : 'Admin Controls';
+
+      if (!isHubBarOpen && isVisualEditing) {
+        toggleVisualEditing(); // disable visual edit mode if closing panel
+      }
+    }
+
+    // Modal popup control
+    function openModal() {
       overlay.classList.add('open');
     }
-    function closeAdminPanel() {
+    function closeModal() {
       overlay.classList.remove('open');
     }
 
-    adminBtn.addEventListener('click', openAdminPanel);
-    header.querySelector('.admin-close-btn').addEventListener('click', closeAdminPanel);
+    // Event Bindings
+    launcherBtn.addEventListener('click', toggleHubBar);
+    document.getElementById('hub-toggle-visual').addEventListener('click', toggleVisualEditing);
+    document.getElementById('hub-open-dashboard').addEventListener('click', openModal);
+    
+    // Download triggers from Hub Bar
+    document.getElementById('hub-download-html').addEventListener('click', downloadHtml);
+    document.getElementById('hub-download-js').addEventListener('click', downloadJs);
+
+    // Download triggers from Modal Dashboard
+    document.getElementById('modal-download-html').addEventListener('click', downloadHtml);
+    document.getElementById('modal-download-js').addEventListener('click', downloadJs);
+
+    // Close Modal triggers
+    modalHeader.querySelector('.admin-close-btn').addEventListener('click', closeModal);
     overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) closeAdminPanel();
+      if (e.target === overlay) closeModal();
     });
   }
 
@@ -1363,5 +1570,5 @@
   initCustomCursor();
   initInteractiveGlobe();
   initExpandMap();
-  initAdminPanel();
+  initAdminControls();
 })();
