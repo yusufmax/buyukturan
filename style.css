@@ -445,7 +445,7 @@ input, textarea {
   right: 2%;
   top: 50%;
   transform: translateY(-50%) translate(var(--parallax-x, 0px), var(--parallax-y, 0px));
-  width: clamp(240px, 42vw, 480px);
+  width: clamp(120px, 21vw, 240px);
   height: auto;
   opacity: 0.25;
   pointer-events: none;
