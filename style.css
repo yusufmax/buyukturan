@@ -925,7 +925,7 @@ input, textarea {
 
 .trust-card p {
   font-size: var(--text-sm);
-  color: var(--color-muted);
+  color: rgba(255, 255, 255, 0.9);
   line-height: 1.6;
 }
 
