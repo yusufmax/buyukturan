@@ -6,14 +6,14 @@
 /* ── Design Tokens ── */
 :root {
   /* Color Palette — monochrome + one accent */
-  --color-bg:        #F5F4F1;   /* Off-white / bone */
-  --color-bg-alt:    #EFEEE9;   /* Slightly darker bone */
-  --color-text:      #1E1E20;   /* Darker charcoal grey */
-  --color-dark:      #16171A;   /* Near-black graphite */
-  --color-accent:    #5B6B73;   /* Steel / gunmetal blue */
-  --color-accent-h:  #6E808A;   /* Accent hover */
-  --color-muted:     #5E5E60;   /* Darker warm grey */
-  --color-border:    #D5D4D0;   /* Subtle border */
+  --color-bg:        #F6F5F0;   /* Warm light sand/bone */
+  --color-bg-alt:    #EDECE5;   /* Medium sand/beige */
+  --color-text:      #22241F;   /* Dark olive-charcoal */
+  --color-dark:      #171914;   /* Near-black olive graphite */
+  --color-accent:    #758F5C;   /* Vibrant military khaki/olive */
+  --color-accent-h:  #86A36B;   /* Vibrant khaki hover */
+  --color-muted:     #60645B;   /* Darker olive grey */
+  --color-border:    #DDDCD3;   /* Khaki-tinted border */
   --color-white:     #FFFFFF;
 
   /* Typography */
@@ -30,7 +30,7 @@
   --text-3xl:  2rem;
   --text-4xl:  2.75rem;
   --text-5xl:  3.5rem;
-  --text-hero: clamp(3rem, 8vw, 7rem);
+  --text-hero: clamp(2.2rem, 6.2vw, 5.2rem);
 
   /* Spacing */
   --space-xs:  4px;
@@ -431,7 +431,7 @@ input, textarea {
   right: -5%;
   top: 50%;
   transform: translateY(-50%) translate(var(--parallax-x, 0px), var(--parallax-y, 0px));
-  width: clamp(300px, 50vw, 600px);
+  width: clamp(240px, 42vw, 480px);
   height: auto;
   opacity: 0.25;
   pointer-events: none;
@@ -1085,7 +1085,7 @@ input, textarea {
   width: 360px;
   height: 280px;
   background: #111317;
-  border: 1px solid rgba(91, 107, 115, 0.2);
+  border: 1px solid rgba(117, 143, 92, 0.2);
   border-radius: 16px;
   position: relative;
   overflow: hidden;
@@ -1101,8 +1101,8 @@ input, textarea {
 
 /* Card Hover State */
 .expand-map-card:hover {
-  border-color: rgba(91, 107, 115, 0.4);
-  box-shadow: 0 8px 30px rgba(91, 107, 115, 0.15);
+  border-color: rgba(117, 143, 92, 0.4);
+  box-shadow: 0 8px 30px rgba(117, 143, 92, 0.15);
 }
 
 @media (max-width: 400px) {
@@ -1204,7 +1204,7 @@ input, textarea {
   left: 50%;
   transform: translate(-50%, -50%) scale(0) translateY(-20px);
   animation: popPin 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.25s forwards;
-  filter: drop-shadow(0 0 10px rgba(91, 107, 115, 0.4));
+  filter: drop-shadow(0 0 10px rgba(117, 143, 92, 0.4));
   z-index: 3;
 }
 
@@ -1323,7 +1323,7 @@ input, textarea {
 
 .expand-map-underline {
   height: 1px;
-  background: linear-gradient(to right, rgba(91, 107, 115, 0.5), rgba(91, 107, 115, 0.15) 70%, transparent);
+  background: linear-gradient(to right, rgba(117, 143, 92, 0.5), rgba(117, 143, 92, 0.15) 70%, transparent);
   width: 100%;
   transform: scaleX(1);
   transform-origin: left;
@@ -1403,7 +1403,7 @@ input, textarea {
 .form-group textarea:focus {
   outline: none;
   border-color: var(--color-accent);
-  box-shadow: 0 0 0 2px rgba(91, 107, 115, 0.2);
+  box-shadow: 0 0 0 2px rgba(117, 143, 92, 0.2);
 }
 
 .form-group input::placeholder,
@@ -1633,7 +1633,7 @@ input, textarea {
   .custom-cursor-ring {
     width: 32px;
     height: 32px;
-    border: 1px solid rgba(91, 107, 115, 0.4);
+    border: 1px solid rgba(117, 143, 92, 0.4);
     border-radius: 50%;
     position: fixed;
     top: 0;
@@ -1657,7 +1657,20 @@ input, textarea {
     width: 50px;
     height: 50px;
     border-color: var(--color-accent);
-    background-color: rgba(91, 107, 115, 0.08);
+    background-color: rgba(117, 143, 92, 0.08);
+  }
+  
+  body.cursor-hover .custom-cursor-dot {
+    background-color: var(--color-dark);
+    width: 4px;
+    height: 4px;
+  }
+  
+  body.cursor-hover .custom-cursor-ring {
+    width: 50px;
+    height: 50px;
+    border-color: var(--color-accent);
+    background-color: rgba(117, 143, 92, 0.08);
   }
   
   body.cursor-active .custom-cursor-dot {
@@ -1666,7 +1679,7 @@ input, textarea {
   
   body.cursor-active .custom-cursor-ring {
     transform: translate(-50%, -50%) scale(0.9);
-    background-color: rgba(91, 107, 115, 0.18);
+    background-color: rgba(117, 143, 92, 0.18);
   }
 }
 
