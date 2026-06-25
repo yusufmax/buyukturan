@@ -755,7 +755,7 @@ input, textarea {
 }
 
 .section-heading--light {
-  color: var(--color-bg);
+  color: var(--color-white);
 }
 
 /* ═══════════════════ ABOUT ═══════════════════ */
@@ -932,7 +932,7 @@ input, textarea {
   font-family: var(--font-heading);
   font-size: var(--text-lg);
   font-weight: 700;
-  color: var(--color-bg);
+  color: var(--color-white);
   margin-bottom: var(--space-sm);
 }
 
@@ -1060,13 +1060,13 @@ input, textarea {
 }
 
 .contact-block p {
-  color: var(--color-bg);
+  color: var(--color-white);
   line-height: 1.7;
   font-size: var(--text-sm);
 }
 
 .contact-link {
-  color: var(--color-bg);
+  color: var(--color-white);
   font-size: var(--text-base);
   transition: color var(--duration) var(--ease-out);
   display: inline-block;
