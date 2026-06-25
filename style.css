@@ -6,15 +6,15 @@
 /* ── Design Tokens ── */
 :root {
   /* Color Palette — monochrome + one accent */
-  --color-bg:        #F6F5F0;   /* Warm light sand/bone */
-  --color-bg-alt:    #EDECE5;   /* Medium sand/beige */
-  --color-text:      #22241F;   /* Dark olive-charcoal */
-  --color-dark:      #171914;   /* Near-black olive graphite */
-  --color-accent:    #758F5C;   /* Vibrant military khaki/olive */
-  --color-accent-h:  #86A36B;   /* Vibrant khaki hover */
-  --color-muted:     #60645B;   /* Darker olive grey */
-  --color-border:    #DDDCD3;   /* Khaki-tinted border */
-  --color-white:     #FFFFFF;
+  --color-bg:        #E4E2D5;   /* Warm light khaki sand background */
+  --color-bg-alt:    #DDDBCF;   /* Medium khaki sand background */
+  --color-text:      #1F211C;   /* Dark charcoal-olive */
+  --color-dark:      #141612;   /* Near-black military olive */
+  --color-accent:    #55683F;   /* Vibrant deep military/khaki green */
+  --color-accent-h:  #677E4D;   /* Accent hover green */
+  --color-muted:     #52564C;   /* Muted olive-grey */
+  --color-border:    #C8C6B8;   /* Contrast khaki border */
+  --color-white:     #FAF9F6;   /* Clean warm off-white for highlighted cards */
 
   /* Typography */
   --font-heading: 'Space Grotesk', system-ui, sans-serif;
@@ -419,10 +419,24 @@ input, textarea {
   min-height: 100dvh;
   display: flex;
   align-items: center;
-  justify-content: center;
   background: var(--color-bg);
   overflow: hidden;
-  padding: var(--space-4xl) var(--space-lg) var(--space-3xl);
+  padding: var(--space-4xl) 0 var(--space-3xl);
+}
+
+.hero-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+  z-index: var(--z-above);
+}
+
+@media (min-width: 768px) {
+  .hero-container {
+    justify-content: flex-start;
+  }
 }
 
 /* Background Wolf Emblem */
@@ -506,7 +520,6 @@ input, textarea {
 }
 
 @media (min-width: 992px) {
-  .hero { justify-content: flex-start; }
   .hero-bg-emblem { right: -2%; }
 }
 
@@ -608,10 +621,10 @@ input, textarea {
 }
 
 .hero-desc {
-  font-size: var(--text-base);
-  font-weight: 600;
+  font-size: var(--text-lg);
+  font-weight: 500;
   color: var(--color-muted);
-  max-width: 520px;
+  max-width: 620px;
   line-height: 1.7;
   margin-bottom: var(--space-xl);
   opacity: 0;
@@ -1085,7 +1098,7 @@ input, textarea {
   width: 360px;
   height: 280px;
   background: #111317;
-  border: 1px solid rgba(117, 143, 92, 0.2);
+  border: 1px solid rgba(85, 104, 63, 0.2);
   border-radius: 16px;
   position: relative;
   overflow: hidden;
@@ -1101,8 +1114,8 @@ input, textarea {
 
 /* Card Hover State */
 .expand-map-card:hover {
-  border-color: rgba(117, 143, 92, 0.4);
-  box-shadow: 0 8px 30px rgba(117, 143, 92, 0.15);
+  border-color: rgba(85, 104, 63, 0.4);
+  box-shadow: 0 8px 30px rgba(85, 104, 63, 0.15);
 }
 
 @media (max-width: 400px) {
@@ -1204,7 +1217,7 @@ input, textarea {
   left: 50%;
   transform: translate(-50%, -50%) scale(0) translateY(-20px);
   animation: popPin 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.25s forwards;
-  filter: drop-shadow(0 0 10px rgba(117, 143, 92, 0.4));
+  filter: drop-shadow(0 0 10px rgba(85, 104, 63, 0.4));
   z-index: 3;
 }
 
@@ -1323,7 +1336,7 @@ input, textarea {
 
 .expand-map-underline {
   height: 1px;
-  background: linear-gradient(to right, rgba(117, 143, 92, 0.5), rgba(117, 143, 92, 0.15) 70%, transparent);
+  background: linear-gradient(to right, rgba(85, 104, 63, 0.5), rgba(85, 104, 63, 0.15) 70%, transparent);
   width: 100%;
   transform: scaleX(1);
   transform-origin: left;
@@ -1403,7 +1416,7 @@ input, textarea {
 .form-group textarea:focus {
   outline: none;
   border-color: var(--color-accent);
-  box-shadow: 0 0 0 2px rgba(117, 143, 92, 0.2);
+  box-shadow: 0 0 0 2px rgba(85, 104, 63, 0.2);
 }
 
 .form-group input::placeholder,
@@ -1633,7 +1646,7 @@ input, textarea {
   .custom-cursor-ring {
     width: 32px;
     height: 32px;
-    border: 1px solid rgba(117, 143, 92, 0.4);
+    border: 1px solid rgba(85, 104, 63, 0.4);
     border-radius: 50%;
     position: fixed;
     top: 0;
@@ -1657,7 +1670,7 @@ input, textarea {
     width: 50px;
     height: 50px;
     border-color: var(--color-accent);
-    background-color: rgba(117, 143, 92, 0.08);
+    background-color: rgba(85, 104, 63, 0.08);
   }
   
   body.cursor-hover .custom-cursor-dot {
@@ -1670,7 +1683,7 @@ input, textarea {
     width: 50px;
     height: 50px;
     border-color: var(--color-accent);
-    background-color: rgba(117, 143, 92, 0.08);
+    background-color: rgba(85, 104, 63, 0.08);
   }
   
   body.cursor-active .custom-cursor-dot {
@@ -1679,7 +1692,7 @@ input, textarea {
   
   body.cursor-active .custom-cursor-ring {
     transform: translate(-50%, -50%) scale(0.9);
-    background-color: rgba(117, 143, 92, 0.18);
+    background-color: rgba(85, 104, 63, 0.18);
   }
 }
 
