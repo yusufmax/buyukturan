@@ -972,7 +972,7 @@ input, textarea {
   font-family: var(--font-heading);
   font-size: var(--text-5xl);
   font-weight: 700;
-  color: var(--color-border);
+  color: rgba(255, 255, 255, 0.15);
   line-height: 1;
   margin-bottom: var(--space-md);
   transition: color var(--duration) var(--ease-out);
@@ -1004,7 +1004,7 @@ input, textarea {
 
 .process-step p {
   font-size: var(--text-sm);
-  color: var(--color-muted);
+  color: var(--color-white);
   max-width: 200px;
   margin: 0 auto;
   line-height: 1.5;
