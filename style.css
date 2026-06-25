@@ -442,7 +442,7 @@ input, textarea {
 /* Background Wolf Emblem */
 .hero-bg-emblem {
   position: absolute;
-  right: -5%;
+  right: 2%;
   top: 50%;
   transform: translateY(-50%) translate(var(--parallax-x, 0px), var(--parallax-y, 0px));
   width: clamp(240px, 42vw, 480px);
@@ -520,7 +520,7 @@ input, textarea {
 }
 
 @media (min-width: 992px) {
-  .hero-bg-emblem { right: -2%; }
+  .hero-bg-emblem { right: 6%; }
 }
 
 /* Interactive Globe Styles */
