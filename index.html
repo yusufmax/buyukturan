@@ -187,8 +187,12 @@
           <div class="expertise-card reveal-element revealed" style="--rotate-x: 0deg; --rotate-y: 0deg;">
             <div class="expertise-icon">
               <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M12 6 Q24 9 36 6 Q37 24 24 42 Q11 24 12 6 Z"></path>
-                <path d="M15 10 Q24 12.5 33 10 Q34 24 24 38 Q14 24 15 10 Z" stroke-width="1" opacity="0.6"></path>
+                <!-- Left Half (Lighter Fill) -->
+                <path d="M24 7 C20 10, 16 12, 12 11 C12 23, 16 35, 24 41 Z" fill="currentColor" fill-opacity="0.4" stroke="none"></path>
+                <!-- Right Half (Solid Fill) -->
+                <path d="M24 7 C28 10, 32 12, 36 11 C36 23, 32 35, 24 41 Z" fill="currentColor" stroke="none"></path>
+                <!-- Outline Border for definition -->
+                <path d="M24 7 C20 10, 16 12, 12 11 C12 23, 16 35, 24 41 C32 35, 36 23, 36 11 C32 12, 28 10, 24 7 Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path>
               </svg>
             </div>
             <h3 data-i18n="expertise.card1.title">Yo’nalishimiz</h3>
