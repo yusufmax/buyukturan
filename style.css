@@ -6,15 +6,15 @@
 /* ── Design Tokens ── */
 :root {
   /* Color Palette — monochrome + one accent */
-  --color-bg:        #E4E2D5;   /* Warm light khaki sand background */
-  --color-bg-alt:    #DDDBCF;   /* Medium khaki sand background */
-  --color-text:      #1F211C;   /* Dark charcoal-olive */
-  --color-dark:      #141612;   /* Near-black military olive */
-  --color-accent:    #55683F;   /* Vibrant deep military/khaki green */
-  --color-accent-h:  #677E4D;   /* Accent hover green */
-  --color-muted:     #52564C;   /* Muted olive-grey */
-  --color-border:    #C8C6B8;   /* Contrast khaki border */
-  --color-white:     #FAF9F6;   /* Clean warm off-white for highlighted cards */
+  --color-bg:        #151713;   /* Very dark military khaki/charcoal background */
+  --color-bg-alt:    #1F221B;   /* Slightly lighter khaki charcoal background */
+  --color-text:      #C8CBBF;   /* Light olive-sand body text */
+  --color-dark:      #FAF9F5;   /* Pure warm off-white for headings/titles */
+  --color-accent:    #C5A85A;   /* Vibrant bronze-gold */
+  --color-accent-h:  #D8BA6B;   /* Accent hover gold */
+  --color-muted:     #8E9187;   /* Muted olive-grey text */
+  --color-border:    #2F3429;   /* Subtle dark olive border */
+  --color-white:     #FAF9F5;   /* Clean warm off-white */
 
   /* Typography */
   --font-heading: 'Space Grotesk', system-ui, sans-serif;
@@ -172,7 +172,7 @@ input, textarea {
 .site-header.scrolled .header-phone,
 .site-header.scrolled .lang-btn,
 .site-header.scrolled .mobile-menu-btn span {
-  color: var(--color-bg);
+  color: var(--color-white);
 }
 
 .site-header.scrolled .lang-btn.active {
@@ -195,7 +195,7 @@ input, textarea {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
-  color: var(--color-text);
+  color: var(--color-dark);
   transition: color var(--duration) var(--ease-out);
   flex-shrink: 0;
 }
@@ -564,7 +564,7 @@ input, textarea {
   transform: translateX(-50%);
   font-size: var(--text-xs);
   color: var(--color-muted);
-  background: rgba(22, 23, 26, 0.05);
+  background: rgba(255, 255, 255, 0.05);
   padding: 4px 12px;
   border-radius: 20px;
   pointer-events: none;
@@ -849,7 +849,7 @@ input, textarea {
 
 .expertise-card {
   padding: var(--space-xl);
-  background: var(--color-bg);
+  background: var(--color-bg-alt);
   border: 1px solid var(--color-border);
   transition: all var(--duration) var(--ease-out);
 }
@@ -889,7 +889,7 @@ input, textarea {
 
 /* ═══════════════════ WHY US ═══════════════════ */
 .section-why {
-  background: var(--color-dark);
+  background: var(--color-bg-alt);
 }
 
 .trust-grid {
@@ -1028,7 +1028,7 @@ input, textarea {
 
 /* ═══════════════════ CONTACT ═══════════════════ */
 .section-contact {
-  background: var(--color-dark);
+  background: var(--color-bg-alt);
 }
 
 .contact-grid {
@@ -1098,7 +1098,7 @@ input, textarea {
   width: 360px;
   height: 280px;
   background: #111317;
-  border: 1px solid rgba(85, 104, 63, 0.2);
+  border: 1px solid rgba(197, 168, 90, 0.2);
   border-radius: 16px;
   position: relative;
   overflow: hidden;
@@ -1114,8 +1114,8 @@ input, textarea {
 
 /* Card Hover State */
 .expand-map-card:hover {
-  border-color: rgba(85, 104, 63, 0.4);
-  box-shadow: 0 8px 30px rgba(85, 104, 63, 0.15);
+  border-color: rgba(197, 168, 90, 0.4);
+  box-shadow: 0 8px 30px rgba(197, 168, 90, 0.15);
 }
 
 @media (max-width: 400px) {
@@ -1217,7 +1217,7 @@ input, textarea {
   left: 50%;
   transform: translate(-50%, -50%) scale(0) translateY(-20px);
   animation: popPin 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.25s forwards;
-  filter: drop-shadow(0 0 10px rgba(85, 104, 63, 0.4));
+  filter: drop-shadow(0 0 10px rgba(197, 168, 90, 0.4));
   z-index: 3;
 }
 
@@ -1336,7 +1336,7 @@ input, textarea {
 
 .expand-map-underline {
   height: 1px;
-  background: linear-gradient(to right, rgba(85, 104, 63, 0.5), rgba(85, 104, 63, 0.15) 70%, transparent);
+  background: linear-gradient(to right, rgba(197, 168, 90, 0.5), rgba(197, 168, 90, 0.15) 70%, transparent);
   width: 100%;
   transform: scaleX(1);
   transform-origin: left;
@@ -1400,7 +1400,7 @@ input, textarea {
   padding: 12px 16px;
   background: rgba(255,255,255,0.05);
   border: 1px solid rgba(255,255,255,0.12);
-  color: var(--color-bg);
+  color: var(--color-dark);
   font-size: var(--text-base);
   transition: border-color var(--duration) var(--ease-out),
               box-shadow var(--duration) var(--ease-out);
@@ -1416,7 +1416,7 @@ input, textarea {
 .form-group textarea:focus {
   outline: none;
   border-color: var(--color-accent);
-  box-shadow: 0 0 0 2px rgba(85, 104, 63, 0.2);
+  box-shadow: 0 0 0 2px rgba(197, 168, 90, 0.2);
 }
 
 .form-group input::placeholder,
@@ -1452,7 +1452,7 @@ input, textarea {
 
 /* ═══════════════════ FOOTER ═══════════════════ */
 .site-footer {
-  background: var(--color-dark);
+  background: var(--color-bg-alt);
   border-top: 1px solid rgba(255,255,255,0.06);
   padding: var(--space-xl) 0;
 }
@@ -1646,7 +1646,7 @@ input, textarea {
   .custom-cursor-ring {
     width: 32px;
     height: 32px;
-    border: 1px solid rgba(85, 104, 63, 0.4);
+    border: 1px solid rgba(197, 168, 90, 0.4);
     border-radius: 50%;
     position: fixed;
     top: 0;
@@ -1670,7 +1670,7 @@ input, textarea {
     width: 50px;
     height: 50px;
     border-color: var(--color-accent);
-    background-color: rgba(85, 104, 63, 0.08);
+    background-color: rgba(197, 168, 90, 0.08);
   }
   
   body.cursor-hover .custom-cursor-dot {
@@ -1683,7 +1683,7 @@ input, textarea {
     width: 50px;
     height: 50px;
     border-color: var(--color-accent);
-    background-color: rgba(85, 104, 63, 0.08);
+    background-color: rgba(197, 168, 90, 0.08);
   }
   
   body.cursor-active .custom-cursor-dot {
@@ -1692,7 +1692,7 @@ input, textarea {
   
   body.cursor-active .custom-cursor-ring {
     transform: translate(-50%, -50%) scale(0.9);
-    background-color: rgba(85, 104, 63, 0.18);
+    background-color: rgba(197, 168, 90, 0.18);
   }
 }
 

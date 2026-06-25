@@ -138,9 +138,9 @@ export default function RotatingEarth({ width = 800, height = 600, className = "
       // Draw ocean (globe background matching off-white page background)
       context.beginPath()
       context.arc(containerWidth / 2, containerHeight / 2, currentScale, 0, 2 * Math.PI)
-      context.fillStyle = "#E4E2D5" // Bone color matching the page background
+      context.fillStyle = "#151713" // Bone color matching the page background
       context.fill()
-      context.strokeStyle = "rgba(85, 104, 63, 0.15)"
+      context.strokeStyle = "rgba(197, 168, 90, 0.15)"
       context.lineWidth = 1 * scaleFactor
       context.stroke()
 
@@ -149,7 +149,7 @@ export default function RotatingEarth({ width = 800, height = 600, className = "
         const graticule = d3.geoGraticule()
         context.beginPath()
         path(graticule())
-        context.strokeStyle = "rgba(85, 104, 63, 0.08)"
+        context.strokeStyle = "rgba(197, 168, 90, 0.08)"
         context.lineWidth = 0.75 * scaleFactor
         context.stroke()
 
@@ -158,7 +158,7 @@ export default function RotatingEarth({ width = 800, height = 600, className = "
         landFeatures.features.forEach((feature: any) => {
           path(feature)
         })
-        context.strokeStyle = "rgba(85, 104, 63, 0.12)"
+        context.strokeStyle = "rgba(197, 168, 90, 0.12)"
         context.lineWidth = 0.75 * scaleFactor
         context.stroke()
 
@@ -169,7 +169,7 @@ export default function RotatingEarth({ width = 800, height = 600, className = "
         if (uzbekistanFeature) {
           context.beginPath()
           path(uzbekistanFeature)
-          context.strokeStyle = "#55683F" // Brand khaki border
+          context.strokeStyle = "#C5A85A" // Brand bronze/gold border
           context.lineWidth = 2 * scaleFactor
           context.stroke()
         }
@@ -212,7 +212,7 @@ export default function RotatingEarth({ width = 800, height = 600, className = "
             context.fill()
 
             if (drawStroke) {
-              context.strokeStyle = "rgba(85, 104, 63, 0.4)"
+              context.strokeStyle = "rgba(197, 168, 90, 0.4)"
               context.lineWidth = 0.5 * scaleFactor
               context.stroke()
             }
