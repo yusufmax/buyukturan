@@ -7,13 +7,13 @@
 :root {
   /* Color Palette — monochrome + one accent */
   --color-bg:        #1A1D21;   /* Graphite Black — main background */
-  --color-bg-alt:    #5A6673;   /* Steel Gray — cards and blocks */
+  --color-bg-alt:    #212429;   /* Alternate Graphite — sections and card backgrounds */
   --color-text:      #F8F9FA;   /* White — text */
   --color-dark:      #FFFFFF;   /* White — headings */
   --color-accent:    #0F2747;   /* Navy Blue — brand color */
   --color-accent-h:  #1D487A;   /* Brighter Navy Blue for hover */
   --color-muted:     #8A96A3;   /* Muted Steel Gray text */
-  --color-border:    rgba(90, 102, 115, 0.3); /* Steel Gray border */
+  --color-border:    #5A6673;   /* Steel Gray border */
   --color-white:     #FFFFFF;   /* White */
 
   /* Typography */
@@ -677,6 +677,7 @@ input, textarea {
 .btn-primary:focus-visible {
   background: var(--color-accent);
   border-color: var(--color-accent);
+  color: var(--color-white);
   transform: translateY(-1px);
 }
 
@@ -849,7 +850,7 @@ input, textarea {
 
 .expertise-card {
   padding: var(--space-xl);
-  background: var(--color-bg-alt);
+  background: var(--color-bg);
   border: 1px solid var(--color-border);
   transition: all var(--duration) var(--ease-out);
 }
@@ -907,7 +908,8 @@ input, textarea {
 
 .trust-card {
   padding: var(--space-xl);
-  border: 1px solid rgba(255,255,255,0.08);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
   transition: all var(--duration) var(--ease-out);
 }
 
