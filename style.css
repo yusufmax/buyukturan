@@ -6,15 +6,15 @@
 /* ── Design Tokens ── */
 :root {
   /* Color Palette — monochrome + one accent */
-  --color-bg:        #151713;   /* Very dark military khaki/charcoal background */
-  --color-bg-alt:    #1F221B;   /* Slightly lighter khaki charcoal background */
-  --color-text:      #C8CBBF;   /* Light olive-sand body text */
-  --color-dark:      #FAF9F5;   /* Pure warm off-white for headings/titles */
-  --color-accent:    #C5A85A;   /* Vibrant bronze-gold */
-  --color-accent-h:  #D8BA6B;   /* Accent hover gold */
-  --color-muted:     #8E9187;   /* Muted olive-grey text */
-  --color-border:    #2F3429;   /* Subtle dark olive border */
-  --color-white:     #FAF9F5;   /* Clean warm off-white */
+  --color-bg:        #1A1D21;   /* Graphite Black — main background */
+  --color-bg-alt:    #5A6673;   /* Steel Gray — cards and blocks */
+  --color-text:      #F8F9FA;   /* White — text */
+  --color-dark:      #FFFFFF;   /* White — headings */
+  --color-accent:    #0F2747;   /* Navy Blue — brand color */
+  --color-accent-h:  #1D487A;   /* Brighter Navy Blue for hover */
+  --color-muted:     #8A96A3;   /* Muted Steel Gray text */
+  --color-border:    rgba(90, 102, 115, 0.3); /* Steel Gray border */
+  --color-white:     #FFFFFF;   /* White */
 
   /* Typography */
   --font-heading: 'Space Grotesk', system-ui, sans-serif;
@@ -1098,7 +1098,7 @@ input, textarea {
   width: 360px;
   height: 280px;
   background: #111317;
-  border: 1px solid rgba(197, 168, 90, 0.2);
+  border: 1px solid rgba(15, 39, 71, 0.2);
   border-radius: 16px;
   position: relative;
   overflow: hidden;
@@ -1114,8 +1114,8 @@ input, textarea {
 
 /* Card Hover State */
 .expand-map-card:hover {
-  border-color: rgba(197, 168, 90, 0.4);
-  box-shadow: 0 8px 30px rgba(197, 168, 90, 0.15);
+  border-color: rgba(15, 39, 71, 0.4);
+  box-shadow: 0 8px 30px rgba(15, 39, 71, 0.15);
 }
 
 @media (max-width: 400px) {
@@ -1217,7 +1217,7 @@ input, textarea {
   left: 50%;
   transform: translate(-50%, -50%) scale(0) translateY(-20px);
   animation: popPin 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.25s forwards;
-  filter: drop-shadow(0 0 10px rgba(197, 168, 90, 0.4));
+  filter: drop-shadow(0 0 10px rgba(15, 39, 71, 0.4));
   z-index: 3;
 }
 
@@ -1336,7 +1336,7 @@ input, textarea {
 
 .expand-map-underline {
   height: 1px;
-  background: linear-gradient(to right, rgba(197, 168, 90, 0.5), rgba(197, 168, 90, 0.15) 70%, transparent);
+  background: linear-gradient(to right, rgba(15, 39, 71, 0.5), rgba(15, 39, 71, 0.15) 70%, transparent);
   width: 100%;
   transform: scaleX(1);
   transform-origin: left;
@@ -1416,7 +1416,7 @@ input, textarea {
 .form-group textarea:focus {
   outline: none;
   border-color: var(--color-accent);
-  box-shadow: 0 0 0 2px rgba(197, 168, 90, 0.2);
+  box-shadow: 0 0 0 2px rgba(15, 39, 71, 0.2);
 }
 
 .form-group input::placeholder,
@@ -1646,7 +1646,7 @@ input, textarea {
   .custom-cursor-ring {
     width: 32px;
     height: 32px;
-    border: 1px solid rgba(197, 168, 90, 0.4);
+    border: 1px solid rgba(15, 39, 71, 0.4);
     border-radius: 50%;
     position: fixed;
     top: 0;
@@ -1670,7 +1670,7 @@ input, textarea {
     width: 50px;
     height: 50px;
     border-color: var(--color-accent);
-    background-color: rgba(197, 168, 90, 0.08);
+    background-color: rgba(15, 39, 71, 0.08);
   }
   
   body.cursor-hover .custom-cursor-dot {
@@ -1683,7 +1683,7 @@ input, textarea {
     width: 50px;
     height: 50px;
     border-color: var(--color-accent);
-    background-color: rgba(197, 168, 90, 0.08);
+    background-color: rgba(15, 39, 71, 0.08);
   }
   
   body.cursor-active .custom-cursor-dot {
@@ -1692,7 +1692,7 @@ input, textarea {
   
   body.cursor-active .custom-cursor-ring {
     transform: translate(-50%, -50%) scale(0.9);
-    background-color: rgba(197, 168, 90, 0.18);
+    background-color: rgba(15, 39, 71, 0.18);
   }
 }
 

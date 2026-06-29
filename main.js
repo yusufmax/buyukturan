@@ -652,9 +652,9 @@
       // Draw ocean (globe background matching off-white page background)
       context.beginPath();
       context.arc(containerWidth / 2, containerHeight / 2, currentScale, 0, 2 * Math.PI);
-      context.fillStyle = "#151713"; // Bone color matching the design system background
+      context.fillStyle = "#1A1D21"; // Bone color matching the design system background
       context.fill();
-      context.strokeStyle = "rgba(197, 168, 90, 0.15)"; // Subtle border
+      context.strokeStyle = "rgba(15, 39, 71, 0.15)"; // Subtle border
       context.lineWidth = 1 * scaleFactor;
       context.stroke();
 
@@ -663,7 +663,7 @@
         const graticule = d3.geoGraticule();
         context.beginPath();
         path(graticule());
-        context.strokeStyle = "rgba(197, 168, 90, 0.08)";
+        context.strokeStyle = "rgba(15, 39, 71, 0.08)";
         context.lineWidth = 0.75 * scaleFactor;
         context.stroke();
 
@@ -672,7 +672,7 @@
         landFeatures.features.forEach((feature) => {
           path(feature);
         });
-        context.strokeStyle = "rgba(197, 168, 90, 0.12)";
+        context.strokeStyle = "rgba(15, 39, 71, 0.12)";
         context.lineWidth = 0.75 * scaleFactor;
         context.stroke();
 
@@ -683,7 +683,7 @@
         if (uzbekistanFeature) {
           context.beginPath();
           path(uzbekistanFeature);
-          context.strokeStyle = "#C5A85A"; // Brand gold/bronze border
+          context.strokeStyle = "#0F2747"; // Brand blue border
           context.lineWidth = 2 * scaleFactor;
           context.stroke();
         }
@@ -726,7 +726,7 @@
             context.fill();
 
             if (drawStroke) {
-              context.strokeStyle = "rgba(197, 168, 90, 0.4)";
+              context.strokeStyle = "rgba(15, 39, 71, 0.4)";
               context.lineWidth = 0.5 * scaleFactor;
               context.stroke();
             }
