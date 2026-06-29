@@ -447,9 +447,9 @@ input, textarea {
   transform: translateY(-50%) translate(var(--parallax-x, 0px), var(--parallax-y, 0px));
   width: clamp(120px, 21vw, 240px);
   height: auto;
-  opacity: 0.25;
+  opacity: 0.4;
   pointer-events: none;
-  color: var(--color-accent);
+  color: var(--color-muted);
   transition: transform 0.2s var(--ease-out);
 }
 
@@ -864,7 +864,7 @@ input, textarea {
 .expertise-icon {
   width: 48px;
   height: 48px;
-  color: var(--color-accent);
+  color: var(--color-white);
   margin-bottom: var(--space-lg);
 }
 
@@ -921,7 +921,7 @@ input, textarea {
 .trust-icon {
   width: 44px;
   height: 44px;
-  color: var(--color-accent);
+  color: var(--color-white);
   margin-bottom: var(--space-lg);
 }
 
