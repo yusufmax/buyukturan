@@ -1571,7 +1571,7 @@ input, textarea {
 .about-quote {
   margin-top: var(--space-4xl);
   padding: var(--space-xl) var(--space-2xl);
-  border-left: 2px solid var(--color-accent);
+  border-left: 2px solid var(--color-white);
   background: var(--color-bg-alt);
   max-width: 800px;
   margin-left: auto;
@@ -1632,7 +1632,7 @@ input, textarea {
   .custom-cursor-dot {
     width: 6px;
     height: 6px;
-    background-color: var(--color-accent);
+    background-color: var(--color-white);
     border-radius: 50%;
     position: fixed;
     top: 0;
@@ -1648,7 +1648,7 @@ input, textarea {
   .custom-cursor-ring {
     width: 32px;
     height: 32px;
-    border: 1px solid rgba(15, 39, 71, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.4);
     border-radius: 50%;
     position: fixed;
     top: 0;
@@ -1663,7 +1663,7 @@ input, textarea {
   }
   
   body.cursor-hover .custom-cursor-dot {
-    background-color: var(--color-dark);
+    background-color: var(--color-white);
     width: 4px;
     height: 4px;
   }
@@ -1671,21 +1671,8 @@ input, textarea {
   body.cursor-hover .custom-cursor-ring {
     width: 50px;
     height: 50px;
-    border-color: var(--color-accent);
-    background-color: rgba(15, 39, 71, 0.08);
-  }
-  
-  body.cursor-hover .custom-cursor-dot {
-    background-color: var(--color-dark);
-    width: 4px;
-    height: 4px;
-  }
-  
-  body.cursor-hover .custom-cursor-ring {
-    width: 50px;
-    height: 50px;
-    border-color: var(--color-accent);
-    background-color: rgba(15, 39, 71, 0.08);
+    border-color: var(--color-white);
+    background-color: rgba(255, 255, 255, 0.08);
   }
   
   body.cursor-active .custom-cursor-dot {
@@ -1694,7 +1681,7 @@ input, textarea {
   
   body.cursor-active .custom-cursor-ring {
     transform: translate(-50%, -50%) scale(0.9);
-    background-color: rgba(15, 39, 71, 0.18);
+    background-color: rgba(255, 255, 255, 0.18);
   }
 }
 
