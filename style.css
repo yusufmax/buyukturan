@@ -7,7 +7,7 @@
 :root {
   /* Color Palette — monochrome + one accent */
   --color-bg:        #1A1D21;   /* Graphite Black — main background */
-  --color-bg-alt:    #212429;   /* Alternate Graphite — sections and card backgrounds */
+  --color-bg-alt:    #1A1D21;   /* Graphite Black — main background */
   --color-text:      #F8F9FA;   /* White — text */
   --color-dark:      #FFFFFF;   /* White — headings */
   --color-accent:    #0F2747;   /* Navy Blue — brand color */
